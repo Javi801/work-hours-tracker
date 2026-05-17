@@ -1,0 +1,25 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# JavaScript/TypeScript
+node_modules/
+
+# Android
+.gradle/
+**/build/
+
+# iOS
+Pods/
+DerivedData/
+
+# Environment files
+.env
+.env.*
