@@ -61,10 +61,15 @@ work-hours-tracker/
 │       │   ├── services/     # Local data services
 │       │   ├── state/        # State management
 │       │   └── utils/        # Utility functions
-│       ├── assets/           # Fonts and images
+│       ├── assets/
+│       │   ├── fonts/
+│       │   └── images/
 │       └── tests/            # Test suite
 └── docs/
+    ├── requirements.md       # Functional and non-functional requirements
+    ├── data-model.md         # Domain entities and relationships
     ├── architecture.md       # Architecture decisions
+    ├── privacy-principles.md # Privacy commitments
     └── roadmap.md            # Development roadmap
 ```
 

@@ -103,7 +103,8 @@ app/mobile/src/
 └── utils/            # Shared utilities: time formatting, date helpers, etc.
 ```
 
-> `domain/` does not exist yet — it will be created during Phase 2 (core domain design).
+> `domain/` does not exist yet — it will be created during Phase 2 (core domain design).  
+> `services/db/`, `services/csv/` and `services/notifications/` do not exist yet — they will be created during Phase 2/3 as each feature is implemented. Currently `services/` contains only a placeholder.
 
 ---
 
