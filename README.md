@@ -61,10 +61,15 @@ work-hours-tracker/
 │       │   ├── services/     # Local data services
 │       │   ├── state/        # State management
 │       │   └── utils/        # Utility functions
-│       ├── assets/           # Fonts and images
+│       ├── assets/
+│       │   ├── fonts/
+│       │   └── images/
 │       └── tests/            # Test suite
 └── docs/
+    ├── requirements.md       # Functional and non-functional requirements
+    ├── data-model.md         # Domain entities and relationships
     ├── architecture.md       # Architecture decisions
+    ├── privacy-principles.md # Privacy commitments
     └── roadmap.md            # Development roadmap
 ```
 
@@ -74,8 +79,10 @@ work-hours-tracker/
 
 | Document | Description |
 |---|---|
-| [REQUIREMENTS.md](REQUIREMENTS.md) | Complete functional and non-functional requirements |
-| [docs/architecture.md](docs/architecture.md) | Architecture approach and folder layout |
+| [docs/requirements.md](docs/requirements.md) | Complete functional and non-functional requirements (FR-01–FR-53) |
+| [docs/data-model.md](docs/data-model.md) | Domain entities, fields, relationships and computed values |
+| [docs/architecture.md](docs/architecture.md) | Layered architecture, data flow, storage and background strategy |
+| [docs/privacy-principles.md](docs/privacy-principles.md) | Privacy commitments and dependency review checklist |
 | [docs/roadmap.md](docs/roadmap.md) | Development phases and progress |
 
 ---
