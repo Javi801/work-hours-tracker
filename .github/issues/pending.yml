@@ -1,0 +1,658 @@
+# Pending issues — Time Balance App
+#
+# Run the "Create pending issues" workflow to create these automatically.
+# Issues already existing (matched by exact title) will be skipped.
+#
+# Labels available: bug | Data | decision-needed | documentation |
+#                   enhancement | feature | UI | UX | wont-fix
+# Milestones: MVP 1 | MVP 2 | MVP 3
+#
+# Already covered by existing issues (not included here):
+#   #27 feat: export sessions to CSV          → FR-48
+#   #28 feat: import sessions from CSV        → FR-49
+#   #29 tech: handle CSV validation and edge cases
+#   #30 tech: ensure persistence after app restart
+#   #31 bug: handle session left open across app restarts
+#   #32 tech: remove all internet capabilities
+#   #33 tech: verify no Google dependencies
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MVP 1 — Core Local Time Tracking
+# ─────────────────────────────────────────────────────────────────────────────
+
+- title: "tech: set up mobile framework and toolchain"
+  body: |
+    ## Description
+    Select and initialize the mobile framework and configure the local development toolchain so the team can start building features.
+
+    ## Tasks
+    - [ ] Evaluate framework options (React Native, Expo, Flutter, etc.)
+    - [ ] Decide and document the choice (update `docs/architecture.md`)
+    - [ ] Initialize app skeleton on the chosen framework
+    - [ ] Add local development scripts (`start`, `build`, `test`)
+    - [ ] Verify the app boots on Android and iOS simulators/emulators
+    - [ ] Verify the app runs on a Huawei/EMUI device or emulator
+
+    ## Notes
+    Must avoid dependencies tightly coupled to Google Play Services.
+    The framework choice must support home screen widgets on both Android and iOS.
+    See Phase 1 in `docs/roadmap.md`.
+  labels:
+    - documentation
+    - decision-needed
+  milestone: "MVP 1"
+
+- title: "feat: delete activity"
+  body: |
+    ## Description
+    The user must be able to permanently delete an activity and all its associated data.
+
+    ## Acceptance criteria
+    - [ ] A delete option is available on the activity detail or activity list
+    - [ ] A confirmation dialog is shown before deletion proceeds
+    - [ ] After confirmation, the activity is permanently removed
+    - [ ] All sessions and breaks associated with the activity are also removed
+    - [ ] The main screen updates immediately after deletion
+
+    **Requirement:** FR-04
+  labels:
+    - feature
+  milestone: "MVP 1"
+
+- title: "feat: prevent overlapping breaks"
+  body: |
+    ## Description
+    The app must prevent a user from starting a new break while one is already active in the same session.
+
+    ## Acceptance criteria
+    - [ ] If a break is already active, the "Start break" action is disabled or hidden
+    - [ ] Attempting to start a second break programmatically is rejected with an error
+    - [ ] The UI clearly indicates when a break is currently active
+    - [ ] No two breaks within the same session can have overlapping time ranges
+
+    **Requirement:** FR-14
+  labels:
+    - feature
+    - Data
+  milestone: "MVP 1"
+
+- title: "feat: display elapsed time in clock format (X h YY min)"
+  body: |
+    ## Description
+    All time values displayed in the app (elapsed time, session duration, summaries) must use the clock format `X h YY min` instead of decimal notation.
+
+    ## Format examples
+    | Raw value | Display |
+    |---|---|
+    | 90 minutes | 1 h 30 min |
+    | 45 minutes | 0 h 45 min |
+    | 435 minutes | 7 h 15 min |
+    | 0 minutes | 0 h 00 min |
+
+    ## Acceptance criteria
+    - [ ] A shared time formatting utility/component exists and is used across the entire app
+    - [ ] Active session elapsed times use this format
+    - [ ] Daily and weekly summaries use this format
+    - [ ] Session history uses this format
+    - [ ] Decimal format is never shown as the primary time value
+
+    **Requirement:** FR-11
+  labels:
+    - feature
+    - UI
+  milestone: "MVP 1"
+
+- title: "ux: define empty states for no activities and no sessions"
+  body: |
+    ## Description
+    The app must show meaningful, actionable empty states instead of blank screens whenever there is nothing to display.
+
+    ## Screens that need empty states
+    - Main screen with no activities created yet
+    - Main screen with activities but no active sessions
+    - Session history screen with no sessions for the selected period
+    - Statistics screen with no data
+
+    ## Acceptance criteria
+    - [ ] Each empty state has a clear illustration or icon, a short message, and a call-to-action button
+    - [ ] The call-to-action leads the user to the relevant next step (e.g. "Create your first activity")
+    - [ ] Empty states match the app's visual language
+    - [ ] Empty states are implemented for all screens listed above
+
+    **Requirement:** UX-02
+  labels:
+    - UX
+    - UI
+  milestone: "MVP 1"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MVP 2 — Goals, Periods and Basic Analytics
+# ─────────────────────────────────────────────────────────────────────────────
+
+- title: "feat: define daily goal for an activity"
+  body: |
+    ## Description
+    The user must be able to set a daily hour target for an activity.
+
+    ## Acceptance criteria
+    - [ ] A daily goal field is available when creating or editing an activity
+    - [ ] The goal is stored in hours and minutes (e.g. 9 h, 4 h 30 min)
+    - [ ] The goal is displayed on the activity detail screen
+    - [ ] The goal is used to calculate missing and extra hours for that day
+
+    **Requirement:** FR-21
+  labels:
+    - feature
+  milestone: "MVP 2"
+
+- title: "feat: define weekly goal for an activity"
+  body: |
+    ## Description
+    The user must be able to set a weekly hour target for an activity.
+
+    ## Acceptance criteria
+    - [ ] A weekly goal field is available when creating or editing an activity
+    - [ ] The goal is stored in hours (e.g. 40 h)
+    - [ ] The goal is used in weekly progress and compliance calculations
+
+    **Requirement:** FR-22
+  labels:
+    - feature
+  milestone: "MVP 2"
+
+- title: "feat: define monthly goal for an activity"
+  body: |
+    ## Description
+    The user must be able to set a monthly hour target for an activity.
+
+    ## Acceptance criteria
+    - [ ] A monthly goal field is available when creating or editing an activity
+    - [ ] The goal is stored in hours
+    - [ ] The goal is used in monthly progress calculations
+
+    **Requirement:** FR-23
+  labels:
+    - feature
+  milestone: "MVP 2"
+
+- title: "feat: support multiple simultaneous goals per activity"
+  body: |
+    ## Description
+    An activity must support having a daily, weekly, and monthly goal active at the same time, each tracked independently.
+
+    ## Acceptance criteria
+    - [ ] A single activity can have daily + weekly + monthly goals configured simultaneously
+    - [ ] Each goal type is tracked and displayed independently
+    - [ ] Missing/extra hours are calculated per goal type
+    - [ ] Removing one goal type does not affect the others
+
+    **Requirement:** FR-24
+  labels:
+    - feature
+    - Data
+  milestone: "MVP 2"
+
+- title: "feat: define day-specific goals per weekday"
+  body: |
+    ## Description
+    The user must be able to assign a different daily target to each day of the week for a given activity.
+
+    ## Example
+    | Day | Goal |
+    |---|---|
+    | Monday | 9 h |
+    | Tuesday | 4 h |
+    | Wednesday | 9 h |
+    | Saturday | No goal |
+
+    ## Acceptance criteria
+    - [ ] Each weekday can have an independent daily goal or be set to "no goal"
+    - [ ] The app uses the correct day-specific goal when calculating missing/extra hours
+    - [ ] The configuration UI shows all 7 days and their current targets
+
+    **Requirement:** FR-25
+  labels:
+    - feature
+  milestone: "MVP 2"
+
+- title: "feat: exclude specific weekdays from goal tracking"
+  body: |
+    ## Description
+    The user must be able to mark specific weekdays as excluded so they never generate missing hours regardless of how much was worked.
+
+    ## Example
+    Track Monday–Friday. Saturday and Sunday are excluded.
+
+    ## Acceptance criteria
+    - [ ] Each weekday can be toggled on/off for goal compliance tracking
+    - [ ] Excluded days do not generate missing hours even if the daily goal is not reached
+    - [ ] Excluded days are visually distinct in the goal configuration UI
+    - [ ] Exclusions work correctly with day-specific goals (FR-25)
+
+    **Requirement:** FR-26
+  labels:
+    - feature
+  milestone: "MVP 2"
+
+- title: "feat: define custom periods with name, start date and target hours"
+  body: |
+    ## Description
+    The user must be able to create named time periods with a manually chosen start date, a duration, a target in hours, and optional repetition rules.
+
+    ## Example
+    - Name: "Sprint 12"
+    - Start: 2026-06-01 (chosen manually — FR-28)
+    - Duration: 2 weeks
+    - Target: 80 h
+    - Repeats: every 2 weeks
+
+    ## Acceptance criteria
+    - [ ] The user can create, edit, and delete custom periods
+    - [ ] Each period has: name, start date (user-chosen), duration, target hours, repetition rule
+    - [ ] Progress toward the period target is calculated from actual sessions
+    - [ ] Period progress is shown in a dedicated section
+    - [ ] The start date is always set manually by the user (FR-28)
+
+    **Requirement:** FR-27, FR-28
+  labels:
+    - feature
+    - Data
+  milestone: "MVP 2"
+
+- title: "feat: define custom time blocks (morning, afternoon, workday)"
+  body: |
+    ## Description
+    The user must be able to define named intra-day time blocks with a start hour, an end hour, and the weekdays they apply to.
+
+    ## Examples
+    - "Morning": 08:00–12:00, Mon–Fri
+    - "Workday": 09:00–18:00, Mon–Fri
+    - "Evening": 19:00–22:00, Sat–Sun
+
+    ## Acceptance criteria
+    - [ ] The user can create, edit, and delete custom time blocks
+    - [ ] Each block has: name, start hour, end hour, applicable weekdays
+    - [ ] Blocks can be used as automatic session-close boundaries (see FR-36)
+    - [ ] Overlapping blocks are allowed but displayed clearly
+
+    **Requirement:** FR-29
+  labels:
+    - feature
+  milestone: "MVP 2"
+
+- title: "feat: calculate missing hours toward goal"
+  body: |
+    ## Description
+    When the worked time for a period is below the goal, the app must calculate and display the missing hours.
+
+    ## Formula
+    ```
+    missing = goal − worked   (only when worked < goal)
+    ```
+
+    ## Acceptance criteria
+    - [ ] Missing hours are calculated per activity per day, week, and month
+    - [ ] Missing hours for a day do NOT automatically carry forward to the next day's target (FR-32)
+    - [ ] Missing daily hours DO contribute to the deficit in weekly and monthly totals (FR-33)
+    - [ ] Missing hours are shown in daily and weekly statistics views
+    - [ ] Missing hours are only shown when a goal is configured for that period
+
+    **Requirement:** FR-30, FR-32, FR-33
+  labels:
+    - feature
+    - Data
+  milestone: "MVP 2"
+
+- title: "feat: calculate extra hours beyond goal"
+  body: |
+    ## Description
+    When the worked time for a period exceeds the goal, the app must calculate and display the extra hours.
+
+    ## Formula
+    ```
+    extra = worked − goal   (only when worked > goal)
+    ```
+
+    ## Acceptance criteria
+    - [ ] Extra hours are calculated per activity per day, week, and month
+    - [ ] Extra hours are shown in daily and weekly statistics views
+    - [ ] Extra hours contribute a surplus to weekly and monthly totals
+    - [ ] Extra hours are only shown when a goal is configured
+
+    **Requirement:** FR-31
+  labels:
+    - feature
+    - Data
+  milestone: "MVP 2"
+
+- title: "feat: aggregate daily missing and extra hours into weekly and monthly totals"
+  body: |
+    ## Description
+    Daily missing and extra hours must roll up into weekly and monthly balance totals, even though they do not change the next day's individual target.
+
+    ## Acceptance criteria
+    - [ ] Weekly balance = sum of all daily worked hours − weekly goal
+    - [ ] Monthly balance = sum of all daily worked hours − monthly goal
+    - [ ] A day with a deficit contributes a negative balance to the weekly/monthly total
+    - [ ] A day with a surplus contributes a positive balance to the weekly/monthly total
+    - [ ] The aggregation is calculated per activity
+
+    **Requirement:** FR-33, FR-34
+  labels:
+    - Data
+  milestone: "MVP 2"
+
+- title: "feat: configure custom day-end hour for automatic session closing"
+  body: |
+    ## Description
+    The user must be able to configure the hour at which their workday ends. Open sessions are automatically closed at that hour instead of midnight.
+
+    ## Acceptance criteria
+    - [ ] The user can set a custom day-end hour in settings (e.g. 20:00)
+    - [ ] If no custom hour is configured, the default remains 00:00 (FR-37)
+    - [ ] Open sessions are automatically closed at the configured hour
+    - [ ] A local notification is sent after auto-close (FR-40)
+    - [ ] Auto-closed sessions remain editable (FR-41)
+    - [ ] Custom time blocks (FR-29) can also trigger session closing
+
+    **Requirement:** FR-36, FR-38
+  labels:
+    - feature
+  milestone: "MVP 2"
+
+- title: "feat: display daily statistics"
+  body: |
+    ## Description
+    The app must show a dedicated daily statistics view with detailed per-activity and aggregate data.
+
+    ## Data to display
+    - Total hours worked today
+    - Worked time breakdown per activity
+    - Missing hours per activity (if below goal)
+    - Extra hours per activity (if above goal)
+    - Total break time
+
+    ## Acceptance criteria
+    - [ ] Daily statistics view is accessible from the main screen or a navigation tab
+    - [ ] Data is shown both per activity and as a global total (FR-35)
+    - [ ] Missing/extra hours sections are hidden when no goal is configured
+    - [ ] The view correctly handles days with no sessions (empty state)
+
+    **Requirement:** FR-42
+  labels:
+    - feature
+    - UI
+  milestone: "MVP 2"
+
+- title: "feat: display weekly statistics (detailed)"
+  body: |
+    ## Description
+    The app must show a detailed weekly statistics view beyond the basic summary available in MVP 1.
+
+    ## Data to display
+    - Total hours worked this week
+    - Weekly compliance rate (worked ÷ weekly goal × 100%)
+    - Most active days of the week
+    - Least active days of the week
+    - Per-activity breakdown for the week
+
+    ## Acceptance criteria
+    - [ ] Detailed weekly stats are accessible as a separate view from the basic weekly summary
+    - [ ] Compliance percentage is shown only when a weekly goal is configured
+    - [ ] Days are ranked by worked hours
+    - [ ] The view handles weeks with partial data (e.g. current week)
+
+    **Requirement:** FR-43
+  labels:
+    - feature
+    - UI
+  milestone: "MVP 2"
+
+- title: "feat: customize widget visible activities and summaries"
+  body: |
+    ## Description
+    The user must be able to configure which activities and summaries are displayed in the home screen widget.
+
+    ## Acceptance criteria
+    - [ ] The user can select which activities appear in the widget
+    - [ ] The user can mark activities as favorites (shown prominently in the widget)
+    - [ ] The user can toggle which summary values are shown (e.g. daily total, active session count)
+    - [ ] Widget configuration is saved and persists across app restarts and device reboots
+    - [ ] Changes to configuration are reflected in the widget without requiring an app restart
+
+    **Requirement:** FR-20
+  labels:
+    - feature
+    - UI
+  milestone: "MVP 2"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# MVP 3 — Advanced Analysis and UX Polish
+# ─────────────────────────────────────────────────────────────────────────────
+
+- title: "feat: display monthly statistics"
+  body: |
+    ## Description
+    The app must show a dedicated monthly statistics view.
+
+    ## Data to display
+    - Total hours worked this month
+    - Average daily hours for the month
+    - Average weekly hours for the month
+    - Activity distribution (proportion of time per activity)
+
+    ## Acceptance criteria
+    - [ ] Monthly statistics view is accessible from a navigation tab or statistics section
+    - [ ] Average values are calculated correctly across partial months
+    - [ ] Activity distribution is shown as a percentage or chart
+    - [ ] The view handles months with no sessions (empty state)
+
+    **Requirement:** FR-44
+  labels:
+    - feature
+    - UI
+  milestone: "MVP 3"
+
+- title: "feat: display trends"
+  body: |
+    ## Description
+    The app must provide trend insights comparing the current period's performance against the previous one.
+
+    ## Trend examples
+    - "You worked 3 h more than last week"
+    - "You worked less than last month"
+    - "Most productive day: Tuesday"
+    - "Most common working hours: 09:00–12:00"
+
+    ## Acceptance criteria
+    - [ ] Weekly and monthly trends are calculated and displayed
+    - [ ] Most productive weekday is identified from session history
+    - [ ] Most common working hours range is identified
+    - [ ] Trends are shown as short, readable summaries
+    - [ ] Only time data is analyzed — no mood, sleep, or health data (FR-47)
+
+    **Requirement:** FR-45, FR-47
+  labels:
+    - feature
+    - UI
+  milestone: "MVP 3"
+
+- title: "feat: compare current period vs previous period"
+  body: |
+    ## Description
+    The user must be able to view a side-by-side comparison of the current period against the immediately preceding one.
+
+    ## Supported comparisons
+    - Current week vs previous week
+    - Current month vs previous month
+    - Current custom period vs the previous occurrence of that period
+
+    ## Acceptance criteria
+    - [ ] Comparison view is accessible from weekly, monthly, and custom period statistics
+    - [ ] Both periods show total hours, goal compliance (if configured), and per-activity breakdown
+    - [ ] Differences (delta) between the two periods are highlighted
+    - [ ] The comparison works correctly even when one period has no sessions
+
+    **Requirement:** FR-46
+  labels:
+    - feature
+    - UI
+  milestone: "MVP 3"
+
+- title: "feat: display graphs and charts for time distribution"
+  body: |
+    ## Description
+    The app must display visual charts to help the user understand their time usage at a glance.
+
+    ## Chart types
+    - Bar chart: daily worked hours per activity (weekly view)
+    - Line chart: worked hours trend over weeks or months
+    - Pie / donut chart: activity distribution for a period
+
+    ## Acceptance criteria
+    - [ ] Charts are embedded in the statistics views (daily, weekly, monthly)
+    - [ ] Charts render and interact fully offline
+    - [ ] Charts are legible on small screens (minimum 320 pt wide)
+    - [ ] Charts meet accessibility contrast requirements
+    - [ ] Tapping a chart element navigates to the relevant detail
+
+    **Requirement:** MVP 3 scope
+  labels:
+    - feature
+    - UI
+  milestone: "MVP 3"
+
+- title: "feat: add notes to sessions"
+  body: |
+    ## Description
+    The user must be able to attach a short free-text note to any session.
+
+    ## Example
+    > "Worked on chapter 2 of the thesis. Finished the introduction section."
+
+    ## Acceptance criteria
+    - [ ] A notes field is available when editing a session
+    - [ ] Notes are displayed in the session detail view
+    - [ ] Notes are included in CSV exports
+    - [ ] Notes are restored correctly after import
+    - [ ] There is no hard character limit, but the UI handles long notes gracefully
+
+    **Requirement:** FR-51
+  labels:
+    - feature
+    - UX
+  milestone: "MVP 3"
+
+- title: "feat: name and categorize breaks"
+  body: |
+    ## Description
+    The user must be able to assign a name and an optional category to each break within a session.
+
+    ## Examples
+    - "Lunch" (category: meal)
+    - "Tea break" (category: rest)
+    - "Phone call" (category: interruption)
+
+    ## Acceptance criteria
+    - [ ] A name field is available when starting or editing a break
+    - [ ] Optional predefined categories can be selected
+    - [ ] Break names and categories are shown in the session detail view
+    - [ ] Break names are included in CSV exports
+
+    **Requirement:** MVP 3 scope (break detail)
+  labels:
+    - feature
+  milestone: "MVP 3"
+
+- title: "feat: display stacked break graphs within sessions"
+  body: |
+    ## Description
+    The app must show a visual timeline of each session where worked segments and break segments are stacked proportionally.
+
+    ## Acceptance criteria
+    - [ ] Session detail view includes a horizontal timeline bar
+    - [ ] Worked time and break time are shown as distinct colored segments
+    - [ ] Break names (if set) are shown as labels on the timeline
+    - [ ] The timeline scales correctly for sessions of any length
+    - [ ] The visualization is legible on small screens
+
+    **Requirement:** MVP 3 scope
+  labels:
+    - feature
+    - UI
+  milestone: "MVP 3"
+
+- title: "feat: dark mode"
+  body: |
+    ## Description
+    The app must support a dark color scheme.
+
+    ## Acceptance criteria
+    - [ ] All screens and components have a dark mode variant
+    - [ ] Dark mode respects the device system preference by default
+    - [ ] The user can override the system preference manually in app settings (light / dark / system)
+    - [ ] All text in dark mode meets WCAG AA contrast ratio (4.5:1)
+    - [ ] Dark mode works on both Android and iOS
+
+    **Requirement:** UX-06
+  labels:
+    - UI
+    - enhancement
+  milestone: "MVP 3"
+
+- title: "ux: improve accessibility (contrast, touch targets, one-handed use)"
+  body: |
+    ## Description
+    The app must meet basic accessibility standards across all screens.
+
+    ## Acceptance criteria
+    - [ ] All text meets WCAG AA contrast ratio (4.5:1 for normal text, 3:1 for large text)
+    - [ ] All interactive elements are at least 44×44 pt (iOS) / 48×48 dp (Android)
+    - [ ] Primary actions are reachable with one hand on standard phone sizes (≤ 390 pt wide)
+    - [ ] No information is conveyed by color alone (always paired with text or icon)
+    - [ ] The app is navigable with accessibility tools (TalkBack / VoiceOver) for key flows
+
+    **Requirement:** UX-05
+  labels:
+    - UX
+    - enhancement
+  milestone: "MVP 3"
+
+- title: "ux: improve overall visual design"
+  body: |
+    ## Description
+    Polish the app's visual design to achieve a cohesive, professional look across all screens.
+
+    ## Scope
+    - [ ] Define and apply a consistent typography scale
+    - [ ] Define and apply a consistent spacing system
+    - [ ] Review and refine the icon set for consistency
+    - [ ] Add meaningful micro-animations and transitions
+    - [ ] Conduct visual QA on both Android and iOS
+    - [ ] Ensure visual consistency between light and dark modes
+
+    **Requirement:** MVP 3 scope
+  labels:
+    - UX
+    - UI
+    - enhancement
+  milestone: "MVP 3"
+
+- title: "feat: calendar view"
+  body: |
+    ## Description
+    The app should provide a monthly calendar grid where the user can see their tracked hours per day at a glance and navigate to past sessions.
+
+    ## Acceptance criteria
+    - [ ] Monthly calendar grid shows total worked hours per day
+    - [ ] Tapping a day opens the daily summary for that date
+    - [ ] Days with no sessions are visually distinct from days with sessions
+    - [ ] Days above goal are highlighted in one color; days below goal in another (when goal is set)
+    - [ ] The calendar supports swipe navigation between months
+    - [ ] The calendar works correctly for the current and all past months
+
+    **Requirement:** MVP 3 scope (possible feature)
+  labels:
+    - feature
+    - UI
+  milestone: "MVP 3"

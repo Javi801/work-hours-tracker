@@ -1,0 +1,42 @@
+name: Export existing issues
+
+# Run manually from the Actions tab whenever you want a fresh export.
+# The result is committed to .github/issues/existing-issues.yml
+on:
+  workflow_dispatch:
+
+permissions:
+  issues: read
+  contents: write
+
+jobs:
+  export:
+    name: Export issues to YAML
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml --quiet
+
+      - name: Export issues
+        run: python3 .github/issues/export_issues.py
+
+      - name: Commit export file
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/issues/existing-issues.yml
+          git diff --cached --quiet \
+            && echo "No changes to commit." \
+            || git commit -m "chore: update existing issues export [skip ci]"
+          git push

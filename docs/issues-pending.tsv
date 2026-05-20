@@ -1,0 +1,33 @@
+Title	URL	Assignees	Status	Linked pull requests	Sub-issues progress	Priority	Size	MVP	Labels	Parent issue
+tech: set up mobile framework and toolchain		Backlog					MVP 1	documentation, decision-needed
+feat: delete activity		Backlog					MVP 1	feature
+feat: prevent overlapping breaks		Backlog					MVP 1	feature, Data
+ux: define empty states for no activities and no sessions		Backlog					MVP 1	UX, UI
+feat: export sessions and activities as CSV		Backlog					MVP 1	feature, Data
+feat: import sessions and activities from CSV		Backlog					MVP 1	feature, Data
+feat: define daily goal for an activity		Backlog					MVP 2	feature
+feat: define weekly goal for an activity		Backlog					MVP 2	feature
+feat: define monthly goal for an activity		Backlog					MVP 2	feature
+feat: support multiple simultaneous goals per activity		Backlog					MVP 2	feature, Data
+feat: define day-specific goals per weekday		Backlog					MVP 2	feature
+feat: exclude specific weekdays from goal tracking		Backlog					MVP 2	feature
+feat: define custom periods with name, start date and target hours		Backlog					MVP 2	feature, Data
+feat: define custom time blocks (morning, afternoon, workday)		Backlog					MVP 2	feature
+feat: calculate missing hours toward daily goal		Backlog					MVP 2	feature, Data
+feat: calculate extra hours beyond daily goal		Backlog					MVP 2	feature, Data
+feat: apply daily deficits to weekly and monthly period totals		Backlog					MVP 2	Data
+feat: configure custom day-end hour for automatic session closing		Backlog					MVP 2	feature
+feat: display daily statistics (hours, missing, extra, breaks)		Backlog					MVP 2	feature, UI
+feat: display weekly statistics (total, compliance, most/least active days)		Backlog					MVP 2	feature, UI
+feat: customize widget visible activities and summaries		Backlog					MVP 2	feature, UI
+feat: display monthly statistics (total, averages, activity distribution)		Backlog					MVP 3	feature, UI
+feat: display trends (more/less worked vs previous period, most productive day)		Backlog					MVP 3	feature, UI
+feat: compare current period vs previous period		Backlog					MVP 3	feature, UI
+feat: display graphs and charts for time distribution		Backlog					MVP 3	feature, UI
+feat: add notes to sessions		Backlog					MVP 3	feature, UX
+feat: name and categorize breaks		Backlog					MVP 3	feature
+feat: display stacked break graphs		Backlog					MVP 3	feature, UI
+feat: dark mode		Backlog					MVP 3	UI, enhancement
+ux: improve accessibility (contrast, touch targets, one-handed use)		Backlog					MVP 3	UX, enhancement
+ux: improve overall visual design		Backlog					MVP 3	UX, UI, enhancement
+feat: calendar view		Backlog					MVP 3	feature, UI
