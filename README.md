@@ -1,21 +1,101 @@
 # Time Balance App
 
-Time Balance App is a clean, minimal foundation for a cross-platform mobile app focused on tracking and balancing time usage.
+> A privacy-first, fully offline mobile app to track work time by activity.
 
-## Scope of this repository
+Time Balance App helps you track how much time you spend on each activity — work, study, freelance, personal projects — using timestamps instead of a continuous timer. It compares your tracked hours against configurable goals and gives you clear summaries and trends, all without ever connecting to the internet.
 
-This repository intentionally contains only project structure and documentation.
+---
 
-- No app features or business logic yet
-- No backend
-- No internet-related code
-- No Firebase
-- No Google services
-- No analytics or telemetry
+## Key principles
+
+- **Privacy first** — no internet, no cloud, no accounts, no analytics, no Google services. Your data stays on your device.
+- **Offline first** — every feature works without network access.
+- **Timestamp-based** — durations are computed from stored timestamps, so tracking survives app restarts and device reboots.
+- **Minimal friction** — the main interaction is quickly starting and stopping activities.
+- **Cross-platform** — targets Android (including Huawei/EMUI) and iOS.
+
+---
+
+## Features (planned by MVP)
+
+### MVP 1 — Core tracking
+- Create, edit, archive, and delete activities
+- Start and stop sessions with automatic duration calculation
+- Multiple sessions active simultaneously
+- Breaks within sessions (deducted from worked time)
+- Edit and delete sessions; add past sessions manually
+- Home screen widget with quick start/stop
+- Automatic session closing at midnight with local notification
+- CSV export and import (fully local)
+- Daily and weekly summaries
+
+### MVP 2 — Goals and analytics
+- Daily, weekly, and monthly time goals per activity
+- Day-specific goals and day exclusions
+- Custom periods and time blocks
+- Missing and extra hour calculations
+- Configurable day-end hour for automatic closing
+- Daily and weekly statistics
+- Widget customization
+
+### MVP 3 — Polish and advanced analysis
+- Monthly statistics, trends, and period comparisons
+- Graphs and visual analytics
+- Session notes and break names
+- Dark mode and accessibility improvements
+
+---
 
 ## Project structure
 
-- `app/mobile/` - Mobile app workspace (platform folders, source placeholders, assets, tests)
-- `docs/` - Project documentation (`requirements.md`, `architecture.md`, `roadmap.md`)
+```
+work-hours-tracker/
+├── app/
+│   └── mobile/
+│       ├── android/          # Android platform
+│       ├── ios/              # iOS platform
+│       ├── src/
+│       │   ├── components/   # Shared UI components
+│       │   ├── navigation/   # Navigation structure
+│       │   ├── screens/      # App screens
+│       │   ├── services/     # Local data services
+│       │   ├── state/        # State management
+│       │   └── utils/        # Utility functions
+│       ├── assets/           # Fonts and images
+│       └── tests/            # Test suite
+└── docs/
+    ├── architecture.md       # Architecture decisions
+    └── roadmap.md            # Development roadmap
+```
 
-This baseline is ready for development to start incrementally.
+---
+
+## Documentation
+
+| Document | Description |
+|---|---|
+| [REQUIREMENTS.md](REQUIREMENTS.md) | Complete functional and non-functional requirements |
+| [docs/architecture.md](docs/architecture.md) | Architecture approach and folder layout |
+| [docs/roadmap.md](docs/roadmap.md) | Development phases and progress |
+
+---
+
+## Current status
+
+**Phase 0 — Foundation (completed)**
+
+Repository structure and documentation are in place. No app logic or framework selected yet.
+
+**Next:** Phase 1 — select mobile framework, initialize app skeleton, add development scripts.
+
+---
+
+## Explicitly out of scope
+
+This app will never include: backend, cloud sync, user accounts, analytics, advertising, GPS tracking, Firebase, Google services, or any form of external data collection.
+
+---
+
+## License
+
+[MIT](LICENSE)

@@ -1,0 +1,38 @@
+name: Create pending issues
+
+# Triggers:
+#   - Manual: Actions tab → "Create pending issues" → Run workflow
+#   - Automatic: any push to main that modifies pending.yml
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/issues/pending.yml"
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  create-issues:
+    name: Create issues from pending.yml
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install pyyaml --quiet
+
+      - name: Create issues
+        run: python3 .github/issues/create_issues.py
