@@ -151,27 +151,48 @@ No timer runs continuously. The UI re-reads and recomputes on each render cycle 
 
 ## 6. Local storage strategy
 
-> **Decision pending.** The storage engine will be chosen during Phase 1.
+> **Decision:** SQLite (embedded). See [ADR-002](adr/ADR-002-sqlite-local-storage.md) for full rationale.  
+> The framework-specific adapter will be confirmed in issue #34 (tech: set up mobile framework and toolchain).
 
-### Requirements the storage engine must meet
+### Chosen engine: SQLite
 
-- Fully offline and embedded (no server process)
-- No Google or Firebase dependencies
-- Reliable ACID transactions
-- Supports migrations for schema evolution
-- Works on Android, Huawei/EMUI, and iOS without platform-specific code where possible
+SQLite is an embedded relational database that runs in-process with no network dependency,
+no Google services, and full ACID transaction support. It ships on every Android and iOS device.
 
-### Candidates under consideration
+### Adapter (to be confirmed in issue #34)
 
-| Option | Notes |
-|---|---|
-| SQLite (via framework adapter) | Mature, reliable, widely supported |
-| Realm | Good mobile ergonomics, local-only mode available |
-| WatermelonDB | Designed for React Native, lazy loading |
-| Isar | Fast, Flutter-native |
-| MMKV + JSON | Simple but limited for relational queries |
+| Framework      | Recommended adapter          |
+|----------------|------------------------------|
+| React Native   | `expo-sqlite` or `op-sqlite` |
+| Flutter        | `drift` (with sqflite)       |
 
-The chosen option will be documented here and reflected in `docs/roadmap.md`.
+### Schema
+
+The initial schema is defined in [`docs/schema.sql`](../docs/schema.sql).
+
+Key conventions:
+- Timestamps: UTC ISO 8601 strings (`TEXT`)
+- Booleans: `INTEGER` (0 / 1)
+- JSON arrays/maps: `TEXT`
+- Primary keys: UUID strings (`TEXT`)
+- WAL mode enabled for crash safety and widget read concurrency
+- `PRAGMA foreign_keys = ON` enforced on every connection
+
+### Migration strategy
+
+- Migrations are numbered sequentially: `001`, `002`, …
+- Each migration is additive (new columns are nullable or have defaults).
+- Schema version is tracked via `PRAGMA user_version` and the `schema_migrations` table.
+- The data layer applies pending migrations on app startup, before any other DB access.
+
+### Why not the alternatives
+
+| Option         | Reason not chosen                                                      |
+|----------------|------------------------------------------------------------------------|
+| Realm          | Local-only mode less maintained; license uncertainty                   |
+| WatermelonDB   | React Native–only; would block a Flutter choice                        |
+| Isar           | Flutter-only; would block a React Native choice                        |
+| MMKV + JSON    | No relational queries; cannot express foreign keys or aggregations     |
 
 ---
 
