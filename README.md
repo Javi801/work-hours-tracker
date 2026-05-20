@@ -74,8 +74,10 @@ work-hours-tracker/
 
 | Document | Description |
 |---|---|
-| [docs/requirements.md](docs/requirements.md) | Complete functional and non-functional requirements |
-| [docs/architecture.md](docs/architecture.md) | Architecture approach and folder layout |
+| [docs/requirements.md](docs/requirements.md) | Complete functional and non-functional requirements (FR-01–FR-53) |
+| [docs/data-model.md](docs/data-model.md) | Domain entities, fields, relationships and computed values |
+| [docs/architecture.md](docs/architecture.md) | Layered architecture, data flow, storage and background strategy |
+| [docs/privacy-principles.md](docs/privacy-principles.md) | Privacy commitments and dependency review checklist |
 | [docs/roadmap.md](docs/roadmap.md) | Development phases and progress |
 
 ---
