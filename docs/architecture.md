@@ -1,7 +1,8 @@
 # Architecture — Time Balance App
 
-> **Status:** Draft — framework not yet selected (see open issue: "tech: set up mobile framework and toolchain").  
-> This document describes the target architecture. Implementation details will be filled in once the framework decision is made.
+> **Status:** Accepted — layered architecture adopted (see [ADR-001](adr/ADR-001-layered-architecture.md)).  
+> Framework not yet selected (see open issue: "tech: set up mobile framework and toolchain").  
+> Implementation details will be filled in once the framework decision is made.
 
 ---
 
